@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context="com.example.tictactoe.MainActivity">
 
     <Button
         android:id="@+id/button22"
@@ -13,6 +13,7 @@
         android:layout_marginStart="2dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="5dp"
+        android:onClick="onClick"
         android:text="Button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/button21"
@@ -25,6 +26,7 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="2dp"
+        android:onClick="onClick"
         android:text="Button"
         app:layout_constraintEnd_toStartOf="@+id/button18"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,6 +39,7 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="2dp"
+        android:onClick="onClick"
         android:text="Button"
         app:layout_constraintEnd_toStartOf="@+id/button21"
         app:layout_constraintStart_toStartOf="parent"
@@ -49,6 +52,7 @@
         android:layout_marginStart="2dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="2dp"
+        android:onClick="onClick"
         android:text="Button"
         app:layout_constraintEnd_toStartOf="@+id/button22"
         app:layout_constraintStart_toEndOf="@+id/button20"
@@ -61,6 +65,7 @@
         android:layout_marginStart="2dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="2dp"
+        android:onClick="onClick"
         android:text="Button"
         app:layout_constraintEnd_toStartOf="@+id/button19"
         app:layout_constraintStart_toEndOf="@+id/button17"
@@ -73,6 +78,7 @@
         android:layout_marginStart="2dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="5dp"
+        android:onClick="onClick"
         android:text="Button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.785"
@@ -86,6 +92,7 @@
         android:layout_marginStart="2dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="5dp"
+        android:onClick="onClick"
         android:text="Button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/button8"
@@ -99,6 +106,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="2dp"
         android:layout_marginBottom="2dp"
+        android:onClick="onClick"
         android:text="Button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/button8"
@@ -114,13 +122,14 @@
         android:layout_marginStart="2dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="2dp"
+        android:onClick="onClick"
         android:text="Button"
         app:layout_constraintEnd_toStartOf="@+id/button9"
         app:layout_constraintStart_toEndOf="@+id/button4"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/playerTurnText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Player X's Turn"
@@ -134,19 +143,20 @@
         app:layout_constraintVertical_bias="0.721" />
 
     <Button
-        android:id="@+id/button16"
+        android:id="@+id/newGameButton"
         android:layout_width="374dp"
         android:layout_height="77dp"
         android:layout_marginStart="157dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="166dp"
+        android:onClick="onClick"
         android:text="New Game"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.486"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/playerTurnText"
         app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

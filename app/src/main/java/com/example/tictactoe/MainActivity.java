@@ -11,27 +11,30 @@ import com.example.ticktacktoe.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    /*
-        button grid layout for game
+    /* game button layout
         1 2 3
         4 5 6
         7 8 9
-    */
+     */
 
-    Button button1;
-    Button button2;
-    Button button3;
-    Button button4;
-    Button button5;
-    Button button6;
-    Button button7;
-    Button button8;
-    Button button9;
-    Button newGame;
+    private Button button1;
+    private Button button2;
+    private Button button3;
+    private Button button4;
+    private Button button5;
+    private Button button6;
+    private Button button7;
+    private Button button8;
+    private Button button9;
+    private Button NewGameBtn;
 
-    TextView playerTurn;
-    int player;
-    String currPlayer;
+    // X and O
+    private final String player1 = "X";
+    private final String player2 = "O";
+
+    // game turns
+    private String currentTurn;
+    private TextView playerTurn;
 
 
     @Override
@@ -39,103 +42,189 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        playerTurn = findViewById(R.id.playerTurnText);
-        newGame = findViewById(R.id.newGameButton);
+        // assigning the game buttons
+        assignButtons();
 
-        registerButtons();
-        gameSetup();
+        // assigning the currentTurn to player
+        currentTurn = player1;
+
+        // assigning the playerTurn and setting the text
+        playerTurn = findViewById(R.id.PlayerTurnTxt);
+        playerTurn.setText("Player " + currentTurn + "'s Turn");
     }
 
-    public void gameSetup(){
-        player = 1;
-        currPlayer = currentPlayer((player));
+    private void assignButtons() {
+        button1 = findViewById(R.id.button1);
+        button2 = findViewById(R.id.button2);
+        button3 = findViewById(R.id.button3);
+        button4 = findViewById(R.id.button4);
+        button5 = findViewById(R.id.button5);
+        button6 = findViewById(R.id.button6);
+        button7 = findViewById(R.id.button7);
+        button8 = findViewById(R.id.button8);
+        button9 = findViewById(R.id.button9);
 
-        setButtonText();
-
-        playerTurn.setText("Player " + currPlayer + "'s turn");
-        newGame.setText("New game");
+        NewGameBtn = findViewById(R.id.NewGameBtn);
     }
 
-    public String currentPlayer(int player) {
-        if(player % 2 == 0) {
-            return "O";
-        } else {
-            return "X";
+    // onClick method
+    public void onClick(View view)
+    {
+        // game buttons
+        Button[] buttons = {button1, button2, button3,
+                button4, button5, button6,
+                button7, button8, button9};
+        // when a button is clicked
+        Button clickedButton = buttonClicked(view, buttons);
+        // if the button was clicked and the text is blank
+        if (clickedButton != null && ( clickedButton.getText().equals("") )){
+            buttonSetText(clickedButton);
+            // check for a win or a tie, if no win is detected then swap players
+            if ( winningConditions(buttons)){
+                playerTurn.setText("Player " + currentTurn + " has won");
+                disableButtons(buttons);
+            }
+            else if (tieCondition(buttons)) {
+                playerTurn.setText("It's a tie!");
+                disableButtons(buttons);
+            }
+            else {
+                setPlayerTurn();
+            }
+        }
+
+    }
+
+    // returns the button that was clicked (returns null if no button clicked)
+    private Button buttonClicked(View v, Button[] buttons){
+        for ( Button button : buttons ){
+            if ( v == button ){
+                return button;
+            }
+        }
+        return null;
+    }
+
+    // marks either an X or O on a button that was clicked
+    private void buttonSetText(Button button){
+        button.setText(currentTurn);
+    }
+
+    // swaps the currentTurn and the playerTurn text
+    private void setPlayerTurn(){
+        if ( currentTurn.equals(player1)){
+            currentTurn = player2;
+        }
+        else{
+            currentTurn = player1;
+        }
+        playerTurn.setText("Player " + currentTurn + "'s Turn");
+    }
+
+    // when the new game button is clicked
+    public void gameReset(View view) {
+        Button[] buttons = {button1, button2, button3,
+                button4, button5, button6,
+                button7, button8, button9};
+        // for each loop that clears text off game buttons
+        for(Button b :buttons){
+            b.setText("");
+        }
+        // enable the buttons
+        enableButtons(buttons);
+        // reset turn
+        if(currentTurn.equals(player2)) {
+            setPlayerTurn();
+        }
+        // reset player text
+        resetText();
+    }
+
+    // returns true if a win is detected for the current player
+    private boolean winningConditions(Button[] buttons){
+        // row win
+        // top row is boxes 1, 2, 3
+        if ( button1.getText().equals(currentTurn) &&
+                button2.getText().equals(currentTurn) &&
+                button3.getText().equals(currentTurn) ){
+            return true;
+        }
+        // middle row is boxes 4, 5, 6
+        else if ( button4.getText().equals(currentTurn) &&
+                button5.getText().equals(currentTurn) &&
+                button6.getText().equals(currentTurn)){
+            return true;
+        }
+        // bottom row is boxes 7, 8, 0
+        else if ( button7.getText().equals(currentTurn) &&
+                button8.getText().equals(currentTurn) &&
+                button9.getText().equals(currentTurn)){
+            return true;
+        }
+
+        // column win
+        //left col is boxes 1, 4, 7
+        if ( button1.getText().equals(currentTurn) &&
+                button4.getText().equals(currentTurn) &&
+                button7.getText().equals(currentTurn)){
+            return true;
+        }
+        //center col is boxes 2, 5, 8
+        else if ( button2.getText().equals(currentTurn) &&
+                button5.getText().equals(currentTurn) &&
+                button8.getText().equals(currentTurn)){
+            return true;
+        }
+        //right col is boxes 3, 6, 9
+        else if ( button3.getText().equals(currentTurn) &&
+                button6.getText().equals(currentTurn) &&
+                button9.getText().equals(currentTurn)){
+            return true;
+        }
+
+        //diagonal win
+        // all boxes 1, 5, and 9 OR boxes 7, 5, and 3 need to be marked with the same symbol
+        if ( button1.getText().equals(currentTurn) && // box 1
+                button5.getText().equals(currentTurn) && // box 5
+                button9.getText().equals(currentTurn)){ // box 9
+            return true;
+        }
+        if ( button7.getText().equals(currentTurn) && //box 7
+                button5.getText().equals(currentTurn) && // box 5
+                button3.getText().equals(currentTurn)){ // box 3
+            return true;
+        }
+        // no win detected
+        return false;
+    }
+
+
+    // return true if a tie is detected (no more boxes to play)
+    private boolean tieCondition(Button[] buttons){
+        // a tie is when all boxes are filled and neither players got three boxes in a row
+        for (Button b: buttons){
+            if (b.getText()==""){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // no buttons can be played until a new game is started
+    private void disableButtons(Button[] buttons){
+        for (Button b: buttons){
+            b.setClickable(false);
         }
     }
 
-    public void nextTurn(Button buttonClicked) {
-        player++;
-        currPlayer = currentPlayer(player);
-        playerTurn.setText("Player " + currPlayer + "'s turn");
-        buttonClicked.setEnabled(false);
-    }
-
-    public void onClick(View v) {
-        if (v.equals(button1)) {
-            button1.setText(currPlayer);
-            nextTurn(button1);
-        } else if (v.equals(button2)) {
-            button2.setText(currPlayer);
-            nextTurn(button2);
-        } else if (v.equals(button3)) {
-            button3.setText(currPlayer);
-            nextTurn(button3);
-        } else if (v.equals(button4)) {
-            button4.setText(currPlayer);
-            nextTurn(button4);
-        } else if (v.equals(button5)) {
-            button5.setText(currPlayer);
-            nextTurn(button5);
-        } else if (v.equals(button6)) {
-            button6.setText(currPlayer);
-            nextTurn(button6);
-        } else if (v.equals(button7)) {
-            button7.setText(currPlayer);
-            nextTurn(button7);
-        } else if (v.equals(button8)) {
-            button8.setText(currPlayer);
-            nextTurn(button8);
-        } else if (v.equals(button9)) {
-            button9.setText(currPlayer);
-            nextTurn(button9);
-        } else if(v.equals(newGame)) {
-            gameSetup();
+    // buttons can be played
+    private void enableButtons(Button[] buttons){
+        for( Button b: buttons){
+            b.setClickable(true);
         }
     }
 
-    private void registerButtons() {
-        button1 = findViewById(R.id.button4);
-        button2 = findViewById(R.id.button8);
-        button3 = findViewById(R.id.button9);
-        button4 = findViewById(R.id.button17);
-        button5 = findViewById(R.id.button18);
-        button6 = findViewById(R.id.button19);
-        button7 = findViewById(R.id.button20);
-        button8 = findViewById(R.id.button21);
-        button9 = findViewById(R.id.button22);
+    private void resetText(){
+        playerTurn.setText("Player " + currentTurn + "'s Turn");
     }
-
-    private void setButtonText() {
-        button1.setEnabled(true);
-        button1.setText(" ");
-        button2.setEnabled(true);
-        button2.setText(" ");
-        button3.setEnabled(true);
-        button3.setText(" ");
-        button4.setEnabled(true);
-        button4.setText(" ");
-        button5.setEnabled(true);
-        button5.setText(" ");
-        button6.setEnabled(true);
-        button6.setText(" ");
-        button7.setEnabled(true);
-        button7.setText(" ");
-        button8.setEnabled(true);
-        button8.setText(" ");
-        button9.setEnabled(true);
-        button9.setText(" ");
-    }
-
-
 }
